@@ -3,27 +3,30 @@ using Microsoft.EntityFrameworkCore;
 using API.Models.Character;
 using API.Models.DatabaseObject;
 using API.Data;
+using AutoMapper;
+using Game_API.Repository.Character.IRepository;
 
 namespace API.Controllers
 {
-    //TODO add repository pattern.
-    //TODO add mapping.
-
     [Route("api/v1")]
     [ApiController]
     public class ContentCharacterController : ControllerBase
     {
-        private readonly ApplicationDbContext _db;
-        public ContentCharacterController(ApplicationDbContext db)
+        private readonly IBaseCharacterRepository _repository;
+        private readonly IMapper _mapper;
+
+        public ContentCharacterController(IBaseCharacterRepository repository, IMapper mapper)
         {
-            _db = db;
+            _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet("content/character")]
         [ProducesResponseType(typeof(List<BaseCharacterDTO>), 200)]
         public async Task<ActionResult<IEnumerable<BaseCharacterDTO>>> GetAll()
         {
-            return Ok(await _db.contentCharacters.ToListAsync());
+            IEnumerable<BaseCharacter> contentCharacters = await _repository.GetAll();
+            return Ok(_mapper.Map<IEnumerable<BaseCharacterDTO>>(contentCharacters));
         }
 
         [HttpGet("content/character{id:int}", Name = "Get")]
@@ -35,14 +38,14 @@ namespace API.Controllers
                 return BadRequest();
             }
 
-            var character = await _db.contentCharacters.FirstOrDefaultAsync(x => x.id == id);
+            var character = await _repository.Get(x => x.id == id);
 
             if (character == null)
             {
                 return NotFound();
             }
 
-            return Ok(character);
+            return Ok(_mapper.Map<BaseCharacterDTO>(character));
         }
 
         [HttpPost("content/character")]
@@ -54,14 +57,7 @@ namespace API.Controllers
                 return BadRequest();
             }
 
-            var contentCharacter = new BaseCharacter
-            {
-                name = character.name,
-                typeId = character.typeId
-            };
-
-            await _db.contentCharacters.AddAsync(contentCharacter);
-            _db.SaveChanges();
+            await _repository.Create(_mapper.Map<BaseCharacter>(character));
 
             return CreatedAtRoute("Get", new { character.id }, character);
         }
@@ -75,15 +71,14 @@ namespace API.Controllers
                 return BadRequest();
             }
 
-            var character = await _db.contentCharacters.FirstOrDefaultAsync(_ => _.id == id);
+            var character = await _repository.Get(_ => _.id == id);
 
             if (character == null)
             {
                 return NotFound(nameof(character));
             }
 
-            _db.contentCharacters.Remove(character);
-            _db.SaveChanges();
+            await _repository.Delete(_mapper.Map<BaseCharacter>(character));
             
             return NoContent();
         }
@@ -96,18 +91,14 @@ namespace API.Controllers
                 return BadRequest();
             }
 
-            var dbCharacter = await _db.contentCharacters.FirstOrDefaultAsync(_ => _.id == id);
+            var dbCharacter = await _repository.Get(_ => _.id == id);
 
             if (dbCharacter == null)
             {
                 return NotFound();
             }
 
-            dbCharacter.name = character.name;
-            dbCharacter.typeId = character.typeId;
-
-            _db.Update(dbCharacter);
-            _db.SaveChanges();
+            await _repository.Update(_mapper.Map<BaseCharacter>(character));
 
             return NoContent();
         }
