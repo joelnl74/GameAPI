@@ -11,10 +11,10 @@ namespace API.Controllers
 
     [Route("api/v1")]
     [ApiController]
-    public class BaseCharacterController : ControllerBase
+    public class ContentCharacterController : ControllerBase
     {
         private readonly ApplicationDbContext _db;
-        public BaseCharacterController(ApplicationDbContext db)
+        public ContentCharacterController(ApplicationDbContext db)
         {
             _db = db;
         }
@@ -54,9 +54,11 @@ namespace API.Controllers
                 return BadRequest();
             }
 
-            var contentCharacter = new BaseCharacter();
-            contentCharacter.name = character.name;
-            contentCharacter.typeId = character.typeId;
+            var contentCharacter = new BaseCharacter
+            {
+                name = character.name,
+                typeId = character.typeId
+            };
 
             await _db.contentCharacters.AddAsync(contentCharacter);
             _db.SaveChanges();
