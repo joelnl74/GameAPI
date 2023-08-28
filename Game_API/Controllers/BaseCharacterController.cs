@@ -1,5 +1,6 @@
 ﻿using Game_API.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Pokemon_API.Models.Character;
 using Pokemon_API.Models.DatabaseObject;
 
@@ -19,21 +20,21 @@ namespace Pokemon_API.Controllers
 
         [HttpGet("content/character")]
         [ProducesResponseType(typeof(List<BaseCharacterDTO>), 200)]
-        public ActionResult<IEnumerable<BaseCharacterDTO>> GetAll()
+        public async Task<ActionResult<IEnumerable<BaseCharacterDTO>>> GetAll()
         {
-            return Ok(_db.contentCharacters);
+            return Ok(await _db.contentCharacters.ToListAsync());
         }
 
         [HttpGet("content/character{id:int}", Name = "Get")]
         [ProducesResponseType(typeof(BaseCharacterDTO), 200)]
-        public ActionResult<BaseCharacterDTO> Get(int id)
+        public async Task<ActionResult<BaseCharacterDTO>> Get(int id)
         {
             if (id == 0)
             {
                 return BadRequest();
             }
 
-            var character = _db.contentCharacters.FirstOrDefault(x => x.id == id);
+            var character = await _db.contentCharacters.FirstOrDefaultAsync(x => x.id == id);
 
             if (character == null)
             {
@@ -45,7 +46,7 @@ namespace Pokemon_API.Controllers
 
         [HttpPost("content/character")]
         [ProducesResponseType(typeof(BaseCharacterDTO), 200)]
-        public ActionResult<BaseCharacterDTO> Create([FromBody] BaseCharacterDTO character)
+        public async Task<ActionResult<BaseCharacterDTO>> Create([FromBody] BaseCharacterDTO character)
         {
             if (character == null)
             {
@@ -56,7 +57,7 @@ namespace Pokemon_API.Controllers
             contentCharacter.name = character.name;
             contentCharacter.typeId = character.typeId;
 
-            _db.contentCharacters.Add(contentCharacter);
+            await _db.contentCharacters.AddAsync(contentCharacter);
             _db.SaveChanges();
 
             return CreatedAtRoute("Get", new { character.id }, character);
@@ -64,14 +65,14 @@ namespace Pokemon_API.Controllers
 
         [HttpDelete("content/character{id:int}", Name = "Delete")]
         [ProducesResponseType(typeof(BaseCharacterDTO), 200)]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == 0)
             {
                 return BadRequest();
             }
 
-            var character = _db.contentCharacters.FirstOrDefault(_ => _.id == id);
+            var character = await _db.contentCharacters.FirstOrDefaultAsync(_ => _.id == id);
 
             if (character == null)
             {
@@ -85,14 +86,14 @@ namespace Pokemon_API.Controllers
         }
 
         [HttpPut("content/character{id:int}", Name = "Put")]
-        public IActionResult Update(int id, [FromBody] BaseCharacterDTO character)
+        public async Task<IActionResult> Update(int id, [FromBody] BaseCharacterDTO character)
         {
             if (id == 0 || id != character.id)
             {
                 return BadRequest();
             }
 
-            var dbCharacter = _db.contentCharacters.FirstOrDefault(_ => _.id == id);
+            var dbCharacter = await _db.contentCharacters.FirstOrDefaultAsync(_ => _.id == id);
 
             if (dbCharacter == null)
             {
