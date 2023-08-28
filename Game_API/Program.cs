@@ -1,8 +1,19 @@
+using Game_API.Data;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+Log.Logger = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.File("log/info", rollingInterval:RollingInterval.Day).CreateLogger();
 
-builder.Services.AddControllers();
+builder.Host.UseSerilog();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
+});
+builder.Services.AddControllers().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
