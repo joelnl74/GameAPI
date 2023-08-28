@@ -1,4 +1,4 @@
-﻿namespace Game_API.Models.User
+﻿namespace API.Models.User
 {
     public class UserBalance
     {

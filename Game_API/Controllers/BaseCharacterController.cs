@@ -1,12 +1,13 @@
-﻿using Game_API.Data;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Pokemon_API.Models.Character;
-using Pokemon_API.Models.DatabaseObject;
+using API.Models.Character;
+using API.Models.DatabaseObject;
+using API.Data;
 
-namespace Pokemon_API.Controllers
+namespace API.Controllers
 {
     //TODO add repository pattern.
+    //TODO add mapping.
 
     [Route("api/v1")]
     [ApiController]

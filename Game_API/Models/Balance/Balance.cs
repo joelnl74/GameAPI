@@ -1,4 +1,4 @@
-﻿namespace Game_API.Models.Balance
+﻿namespace API.Models.Balance
 {
     public class Balance
     {

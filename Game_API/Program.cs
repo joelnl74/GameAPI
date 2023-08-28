@@ -1,4 +1,4 @@
-using Game_API.Data;
+using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 

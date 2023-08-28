@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Pokemon_API.Models.DatabaseObject
+namespace API.Models.DatabaseObject
 {
     public class BaseCharacterDTO
     {

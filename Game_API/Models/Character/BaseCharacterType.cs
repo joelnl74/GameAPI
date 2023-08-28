@@ -1,4 +1,4 @@
-﻿namespace Pokemon_API.Models.Character
+﻿namespace API.Models.Character
 {
     public enum Type
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Pokemon_API.Models.Character;
+using API.Models.Character;
 
-namespace Game_API.Data
+namespace API.Data
 {
     public class ApplicationDbContext : DbContext
     {
