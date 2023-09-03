@@ -1,7 +1,14 @@
+using Game_Tools.Services;
+using Tools;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddAutoMapper(typeof(MappingConfig));
+
+builder.Services.AddHttpClient<IGameAPIService, GameAPIService>();
+builder.Services.AddScoped<IGameAPIService, GameAPIService>();
 
 var app = builder.Build();
 
