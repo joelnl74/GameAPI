@@ -1,7 +1,11 @@
 using API.Data;
 using Game_API;
+using Game_API.Mapper.Content;
+using Game_API.Mapper.Content.Interfaces;
 using Game_API.Repository.Character;
 using Game_API.Repository.Character.IRepository;
+using Game_API.Repository.Content;
+using Game_API.Repository.Content.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -23,6 +27,10 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 
 // Repositories
 builder.Services.AddScoped<IBaseCharacterRepository, BaseCharacterRepository>();
+builder.Services.AddScoped<IContentCharacterTypeRepository, ContentCharacterTypeRepository>();
+
+// Mappers
+builder.Services.AddScoped<IContentCharacterTypeMapper, ContentCharacterTypeMapper>();
 
 // Swagger.
 builder.Services.AddEndpointsApiExplorer();

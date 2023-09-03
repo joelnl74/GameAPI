@@ -1,41 +1,41 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using API.Models.Character;
-using API.Models.DatabaseObject;
-using API.Data;
+﻿using API.Models.DatabaseObject;
 using AutoMapper;
-using Game_API.Repository.Character.IRepository;
+using Game_API.Mapper.Content.Interfaces;
 using Game_API.Models;
-using System.Threading.Tasks;
+using Game_API.Models.Content;
+using Game_API.Models.DatabaseObject;
+using Game_API.Repository.Character.IRepository;
+using Game_API.Repository.Content.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers
+namespace Game_API.Controllers
 {
     [Route("api/v1")]
     [ApiController]
-    public class ContentCharacterController : ControllerBase
+    public class ContentChracterTypeController : ControllerBase
     {
         private APIResponse _response;
-        private readonly IBaseCharacterRepository _repository;
-        private readonly IMapper _mapper;
+        private readonly IContentCharacterTypeRepository _repository;
+        private readonly IContentCharacterTypeMapper _mapper;
 
-        public ContentCharacterController(IBaseCharacterRepository repository, IMapper mapper)
+        public ContentChracterTypeController(IContentCharacterTypeRepository repository, IContentCharacterTypeMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
             _response = new APIResponse();
         }
 
-        [HttpGet("content/character")]
-        [ProducesResponseType(typeof(List<BaseCharacterDTO>), 200)]
+        [HttpGet("content/types")]
+        [ProducesResponseType(typeof(List<ContentCharacterType>), 200)]
         public async Task<ActionResult<APIResponse>> GetAll()
         {
             try
             {
-                IEnumerable<BaseCharacter> contentCharacters = await _repository.GetAll();
-                _response.result = _mapper.Map<IEnumerable<BaseCharacterDTO>>(contentCharacters);
+                IEnumerable<ContentCharacterType> contentCharacters = await _repository.GetAll();
+                _response.result = _mapper.MapMany(contentCharacters);
                 _response.statusCode = System.Net.HttpStatusCode.OK;
                 _response.isSucces = true;
-                
+
                 return Ok(_response);
             }
             catch (Exception ex)
@@ -47,25 +47,25 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("content/character{id:int}", Name = "Get")]
-        [ProducesResponseType(typeof(BaseCharacterDTO), 200)]
-        public async Task<ActionResult<APIResponse>> Get(int id)
+        [HttpGet("content/types{type:int}")]
+        [ProducesResponseType(typeof(ContentCharacterType), 200)]
+        public async Task<ActionResult<APIResponse>> Get(int type)
         {
             try
             {
-                if (id == 0)
+                if (type == 0)
                 {
                     return BadRequest();
                 }
 
-                var character = await _repository.Get(x => x.id == id);
+                var character = await _repository.Get(x => x.type == type);
 
                 if (character == null)
                 {
                     return NotFound();
                 }
 
-                _response.result = _mapper.Map<BaseCharacterDTO>(character);
+                _response.result = _mapper.MapSingle(character);
                 _response.statusCode = System.Net.HttpStatusCode.OK;
                 _response.isSucces = true;
 
@@ -80,9 +80,9 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("content/character")]
+        [HttpPost("content/types")]
         [ProducesResponseType(typeof(BaseCharacterDTO), 201)]
-        public async Task<ActionResult<APIResponse>> Create([FromBody] BaseCharacterDTO character)
+        public async Task<ActionResult<APIResponse>> Create([FromBody] ContentCharacterType character)
         {
             try
             {
@@ -91,15 +91,15 @@ namespace API.Controllers
                     return BadRequest();
                 }
 
-                var model = _mapper.Map<BaseCharacter>(character);
+                var model = _mapper.MapSingle(character);
 
-                await _repository.Create(model);
+                await _repository.Create(character);
 
                 _response.result = model;
                 _response.statusCode = System.Net.HttpStatusCode.Created;
                 _response.isSucces = true;
 
-                return CreatedAtRoute("Get", new { character.id }, _response);
+                return Ok(_response);
             }
             catch (Exception ex)
             {
@@ -110,28 +110,27 @@ namespace API.Controllers
             }
         }
 
-        [HttpDelete("content/character{id:int}", Name = "Delete")]
+        [HttpDelete("content/types{type:int}")]
         [ProducesResponseType(typeof(APIResponse), 200)]
-        public async Task<ActionResult<APIResponse>> Delete(int id)
+        public async Task<ActionResult<APIResponse>> Delete(int type)
         {
             try
             {
-                if (id == 0)
+                if (type == 0)
                 {
                     return BadRequest();
                 }
 
-                var character = await _repository.Get(_ => _.id == id);
+                var character = await _repository.Get(_ => _.type == type);
 
                 if (character == null)
                 {
                     return NotFound(nameof(character));
                 }
 
-                var model = _mapper.Map<BaseCharacter>(character);
+                await _repository.Delete(character);
 
-                await _repository.Delete(model);
-
+                var model = _mapper.MapSingle(character);
                 _response.statusCode = System.Net.HttpStatusCode.NoContent;
                 _response.isSucces = true;
 
@@ -146,26 +145,27 @@ namespace API.Controllers
             }
         }
 
-        [HttpPut("content/character{id:int}", Name = "Put")]
-        public async Task<ActionResult<APIResponse>> Update(int id, [FromBody] BaseCharacterDTO character)
+        [HttpPut("content/types{type:int}")]
+        public async Task<ActionResult<APIResponse>> Update(int type, [FromBody] ContentCharacterType character)
         {
             try
             {
-                if (id == 0 || id != character.id)
+                if (type == 0 || type != character.type)
                 {
                     return BadRequest();
                 }
 
-                var dbCharacter = await _repository.Get(_ => _.id == id);
+                var dbCharacter = await _repository.Get(_ => _.type == type);
 
                 if (dbCharacter == null)
                 {
                     return NotFound();
                 }
 
-                var model = _mapper.Map<BaseCharacter>(character);
 
-                await _repository.Update(model);
+                await _repository.Update(character);
+
+                var model = _mapper.MapSingle(character);
 
                 _response.statusCode = System.Net.HttpStatusCode.NoContent;
                 _response.isSucces = true;
