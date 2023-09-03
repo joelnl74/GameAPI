@@ -1,4 +1,7 @@
-﻿namespace API.Models.Character
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Game_API.Models.Content
 {
     public enum Type
     {
@@ -17,11 +20,12 @@
         Fighting = 12,
     }
 
-    public class BaseCharacterType
+    public class ContentCharacterType
     {
+        [Key]
         public int id { get; set; }
-        public Type type { get; set; }
-        public required List<Type> strongAgainst { get; set; }
-        public required List<Type> weakAgainst { get; set; }
+        public int type { get; set; }
+        public List<int> strongAgainst { get; set; }
+        public List<int> weakAgainst { get; set; }
     }
 }
