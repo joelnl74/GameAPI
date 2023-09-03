@@ -5,6 +5,10 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game_API", "Game_API\Game_API.csproj", "{73DA4284-401E-4CE0-A533-5073167CBF80}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game_Tools", "Game_Tools\Game_Tools.csproj", "{C21FBBC6-58D2-49CA-B8FA-2BE2A8B4C23E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game_Utilities", "Game_Utilities\Game_Utilities.csproj", "{68ED0683-8608-42BE-A1A3-44722CC05FB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{73DA4284-401E-4CE0-A533-5073167CBF80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73DA4284-401E-4CE0-A533-5073167CBF80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73DA4284-401E-4CE0-A533-5073167CBF80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C21FBBC6-58D2-49CA-B8FA-2BE2A8B4C23E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C21FBBC6-58D2-49CA-B8FA-2BE2A8B4C23E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C21FBBC6-58D2-49CA-B8FA-2BE2A8B4C23E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C21FBBC6-58D2-49CA-B8FA-2BE2A8B4C23E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68ED0683-8608-42BE-A1A3-44722CC05FB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68ED0683-8608-42BE-A1A3-44722CC05FB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68ED0683-8608-42BE-A1A3-44722CC05FB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68ED0683-8608-42BE-A1A3-44722CC05FB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
