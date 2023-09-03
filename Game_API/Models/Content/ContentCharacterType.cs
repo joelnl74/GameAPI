@@ -23,9 +23,10 @@ namespace Game_API.Models.Content
     public class ContentCharacterType
     {
         [Key]
-        public int id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int type { get; set; }
-        public List<int> strongAgainst { get; set; }
-        public List<int> weakAgainst { get; set; }
+        public string name { get; set; }
+        public string strongAgainst { get; set; }
+        public string weakAgainst { get; set; }
     }
 }

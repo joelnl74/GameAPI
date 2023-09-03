@@ -25,12 +25,15 @@ namespace API.Data
                 new BaseCharacter {id = 4, name = "fire", typeId = 4 }
                 );
 
-            modelBuilder.Entity<ContentCharacterType>().HasData(
-                new ContentCharacterType { id = 1, strongAgainst = new List<int>(), weakAgainst = new List<int>() },
-                new ContentCharacterType { id = 2, strongAgainst = new List<int> { (int)Game_API.Models.Content.Type.Water }, weakAgainst = new List<int> { (int)Game_API.Models.Content.Type.Fire } },
-                new ContentCharacterType { id = 3, strongAgainst = new List<int> { (int)Game_API.Models.Content.Type.Fire }, weakAgainst = new List<int> { (int)Game_API.Models.Content.Type.Grass} },
-                new ContentCharacterType { id = 4, strongAgainst = new List<int> { (int)Game_API.Models.Content.Type.Grass }, weakAgainst = new List<int> { (int)Game_API.Models.Content.Type.Water} }
-                );
+            var models = new List<ContentCharacterType>();
+
+            foreach (int i in Enum.GetValues(typeof(Game_API.Models.Content.Type)))
+            {
+                var model = new ContentCharacterType { type = i, name = ((Game_API.Models.Content.Type)i).ToString(), strongAgainst = "", weakAgainst = "" };
+                models.Add(model);
+            }
+
+            modelBuilder.Entity<ContentCharacterType>().HasData(models);
         }
     }
 }
