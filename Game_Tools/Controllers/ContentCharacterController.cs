@@ -18,7 +18,7 @@ namespace Game_Tools.Controllers
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> ContentCharacterIndex()
         {
             List<BaseCharacter> list = new List<BaseCharacter>();
 
