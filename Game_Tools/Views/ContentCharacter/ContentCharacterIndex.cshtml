@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Tools.Models.Character.BaseCharacter>
+
+<br />
+<div class="container p-4 border">
+    <div class="row pb-2">
+        <div class="col">
+            <h1 class="text-primary">Content character list</h1>
+        </div>
+        <div class="col text-end pt-1">
+            <a class="btn btn-outline-primary">Create new villa</a>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                    TypeId
+                </th>
+                <th>
+                    Name
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model)
+            {
+                <tr>
+                    <td>@item.id</td>
+                    <td>@item.typeId</td>
+                    <td>@item.name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
