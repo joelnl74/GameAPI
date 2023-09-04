@@ -1,4 +1,5 @@
 ﻿@model Tools.Models.DatabaseObject.BaseCharacterDTO
+@using System.Web.Mvc.Html
 
 <form asp-action="CreateContentCharacter">
     <br />
@@ -19,8 +20,8 @@
                 <label asp-for="typeId" class="control-label pt-2" style="font-size:20px"></label>
             </div>
             <div class="col-10 pb-3">
-                <input asp-for="typeId" class="form-control" />
-                <span asp-validation-for="typeId" class="text-danger"></span>
+                <select asp-for="@Model.typeId" asp-items="Html.GetEnumSelectList<Tools.Models.DatabaseObject.Type>()"></select>
+                @Html.ValidationMessageFor(model => model.typeId, "", new { @class = "text-danger" })
             </div>
             <div class="col-5 offset-2">
                 <a asp-action="ContentCharacterIndex" class="btn-primary btn form-control">Back to list</a>
