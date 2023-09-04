@@ -2,8 +2,10 @@
 using Game_Tools.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using Tools.Models;
 using Tools.Models.Character;
+using Tools.Models.DatabaseObject;
 
 namespace Game_Tools.Controllers
 {
@@ -28,6 +30,31 @@ namespace Game_Tools.Controllers
                 list = JsonConvert.DeserializeObject<List<BaseCharacter>>(Convert.ToString(response.result));
             }
             return View(list);
+        }
+
+        public async Task<IActionResult> CreateContentCharacter()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateContentCharacter(BaseCharacterDTO baseCharacterDTO)
+        {
+            if (ModelState.IsValid == false)
+            {
+                return View(baseCharacterDTO);
+            }
+
+            var response = await _gameAPIService.Create<APIResponse>(baseCharacterDTO);
+            
+            if (response != null && response.isSucces)
+            {
+                return RedirectToAction(nameof(ContentCharacterIndex));
+            }
+
+            return View(baseCharacterDTO);
         }
     }
 }
