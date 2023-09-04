@@ -7,7 +7,7 @@
             <h1 class="text-primary">Content character list</h1>
         </div>
         <div class="col text-end pt-1">
-            <a class="btn btn-outline-primary">Create new villa</a>
+            <a asp-controller="ContentCharacter" asp-action="CreateContentCharacter" class="btn btn-outline-primary">Create</a>
         </div>
     </div>
     <table class="table">
@@ -31,6 +31,10 @@
                     <td>@item.id</td>
                     <td>@item.typeId</td>
                     <td>@item.name</td>
+                    <td>
+                        <a asp-controller="ContentCharacter" asp-action="UpdateContentCharacter" class="btn btn-outline-primary">Update</a>
+                        <a asp-controller="ContentCharacter" asp-action="DeleteContentCharacter" class="btn btn-outline-primary">Delete</a>
+                    </td>
                 </tr>
             }
         </tbody>
